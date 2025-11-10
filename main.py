@@ -16,12 +16,11 @@ class Name(Field):
 
 class Phone(Field):
     """Клас, який забезпечує валідацію номера телефону"""
-    def number_validation(self, value):
+    def __init__(self, value):
+        super().__init__(value)
         """перевірка на 10 цифр"""
-        if value.isdigit() and len(value) == 10:
-            return value
-        else: 
-             return ValueError("Phone number shoud have 10 digits")
+        if not value.isdigit() and len(value) == 10:
+            return ValueError("Phone number shoud have 10 digits")
         
 
 class Record:
@@ -36,25 +35,26 @@ class Record:
     
     def remove_phone(self, phone):
         """Видаляє номер телефону, який вказано на вхід"""
-        for ph in self.phones:
-            if ph.values == phone:
-                self.phones.remove(ph)
-                return True
+        ph = self.find_phone(phone)
+        if ph:
+            self.phones.remove(ph)
+            return True
         return False
     
     def edit_phone(self, old_phone, new_phone):
         """Змінює старий номер телефону на новий"""
-        for i, ph in enumerate(self.phones):
-            if ph.value == old_phone:
-                self.phones[i] = Phone(new_phone)
-                return True
+        ph = self.find_phone(old_phone)
+        if ph:
+            index = self.phones.index(ph)
+            self.phones[index] = Phone(new_phone)
+            return True
         return False
     
     def find_phone(self, phone):
         """Пошук телефону в записах"""
         for ph in self.phones:
             if ph.value == phone:
-                return ph.value
+                return ph
         return None
         
 
