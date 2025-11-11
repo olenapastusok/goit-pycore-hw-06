@@ -19,9 +19,8 @@ class Phone(Field):
     def __init__(self, value):
         super().__init__(value)
         """перевірка на 10 цифр"""
-        if not value.isdigit() and len(value) == 10:
-            return ValueError("Phone number shoud have 10 digits")
-        
+        if not value.isdigit() or len(value) != 10:
+            raise ValueError("Phone number shoud have 10 digits") 
 
 class Record:
     """Клас, який відповідає за додавання, видалення, редагування та пошук телефонів"""
@@ -82,7 +81,7 @@ book = AddressBook()
 
 # Створення запису для John
 john_record = Record("John")
-john_record.add_phone("1234567890")
+john_record.add_phone("4234567890")
 john_record.add_phone("5555555555")
 
 # Додавання запису John до адресної книги
